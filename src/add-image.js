@@ -1,11 +1,13 @@
 import Potato from "./potato.jpg";
-import altText from "./altText.txt";
 
-export function addImage() {
+function addImage() {
   const img = document.createElement("img");
-  img.src = Potato;
+  img.alt = "Potato";
   img.width = 300;
-  img.height = 300;
-  img.alt = altText;
-  document.body.appendChild(img);
+  img.src = Potato;
+
+  const body = document.querySelector("body");
+  body.appendChild(img);
 }
+
+export default addImage;
