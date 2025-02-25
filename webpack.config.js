@@ -58,6 +58,10 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.hbs$/,
+        use: ["handlebars-loader"],
+      },
     ],
   },
   plugins: [
@@ -72,8 +76,9 @@ module.exports = {
       title: "Hello world",
       filename: "index.html",
       meta: {
-        description: "This is a description",
+        description: "This is a description for Alper",
       },
+      template: "./src/index.hbs",
     }),
   ],
 };
