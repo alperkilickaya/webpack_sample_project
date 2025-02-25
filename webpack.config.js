@@ -5,7 +5,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   entry: "./src/index.js",
   output: {
-    filename: "bundle.js",
+    // contenthash is for cache busting
+    filename: "bundle.[contenthash].js",
     path: path.resolve(__dirname, "./dist"),
     // for webpack5 default value is auto
     publicPath: "dist/",
@@ -23,7 +24,7 @@ module.exports = {
             maxSize: 8 * 1024,
           },
         },
-        // each asset will be in a separate file. It makes the bundle.js file smaller bu t needs more requests to the server
+        // each asset will be in a separate file. It makes the bundle.js file smaller but needs more requests to the server
         /* type: "asset/resource", */
         // inline type is for small files like svg. it will generate base64 string in the bundle.js file
         /*  type: "asset/inline", */
@@ -56,7 +57,8 @@ module.exports = {
     new TerserPlugin(),
     // this plugin is for extracting the css into a separate file
     new MiniCssExtractPlugin({
-      filename: "style.css",
+      // contenthash is for cache busting
+      filename: "style.[contenthash].css",
     }),
   ],
 };
