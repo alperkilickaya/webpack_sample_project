@@ -21,6 +21,18 @@ module.exports = {
     },
   },
   mode: "development",
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "./dist"),
+    },
+    devMiddleware: {
+      writeToDisk: true, // it will write the files to the disk
+      index: "index.html", // it will serve the index.html file
+    },
+    port: 9000, // it will run the server on port 9000
+    open: true, // it will open the browser automatically
+    hot: true, // it will hot reload the page automatically
+  },
   module: {
     rules: [
       {
