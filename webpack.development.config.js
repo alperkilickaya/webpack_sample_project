@@ -6,10 +6,13 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 /* const { CleanWebpackPlugin } = require("clean-webpack-plugin"); */
 module.exports = {
-  entry: "./src/index.js",
+  entry: {
+    "hello-world": "./src/hello-world.js",
+    "patato-image": "./src/patato-image.js",
+  },
   output: {
     // contenthash is for cache busting. it is not needed in development mode
-    filename: "bundle.js",
+    filename: "[name].bundle.js",
     path: path.resolve(__dirname, "./dist"),
     // for webpack5 default value is auto
     publicPath: "",
@@ -88,11 +91,21 @@ module.exports = {
     /*  new CleanWebpackPlugin(), */
     new HtmlWebpackPlugin({
       title: "Hello world",
-      filename: "index.html",
+      filename: "hello-world.html",
+      chunks: ["hello-world"],
       meta: {
-        description: "This is a description for Alper",
+        description: "This is a description for hello world",
       },
-      template: "./src/index.hbs",
+      template: "./src/page-template.hbs",
+    }),
+    new HtmlWebpackPlugin({
+      title: "Patato image",
+      filename: "patato-image.html",
+      chunks: ["patato-image"],
+      meta: {
+        description: "This is a description for patato image",
+      },
+      template: "./src/page-template.hbs",
     }),
   ],
 };
