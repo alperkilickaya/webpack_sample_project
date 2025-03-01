@@ -3,10 +3,13 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 /* const { CleanWebpackPlugin } = require("clean-webpack-plugin"); */
 module.exports = {
-  entry: "./src/index.js",
+  entry: {
+    "hello-world": "./src/hello-world.js",
+    "patato-image": "./src/patato-image.js",
+  },
   output: {
     // contenthash is for cache busting
-    filename: "bundle.[contenthash].js",
+    filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "./dist"),
     // for webpack5 default value is auto
     publicPath: "",
@@ -67,16 +70,30 @@ module.exports = {
     // this plugin is for extracting the css into a separate file
     new MiniCssExtractPlugin({
       // contenthash is for cache busting
-      filename: "style.[contenthash].css",
+      filename: "[name].[contenthash].css",
     }),
     /*  new CleanWebpackPlugin(), */
+    // use chunks for splitting the code
+    // use htmlwebpack instance for multiple html files
     new HtmlWebpackPlugin({
       title: "Hello world",
-      filename: "index.html",
+      filename: "hello-world.html",
+      chunks: ["hello-world"],
       meta: {
-        description: "This is a description for Alper",
+        description: "This is a description for hello world",
       },
-      template: "./src/index.hbs",
+      template: "./src/page-template.hbs",
+      minify: false,
+    }),
+    new HtmlWebpackPlugin({
+      title: "Patato image",
+      filename: "patato-image.html",
+      chunks: ["patato-image"],
+      meta: {
+        description: "This is a description for patato image",
+      },
+      template: "./src/page-template.hbs",
+      minify: false,
     }),
   ],
 };
