@@ -21,6 +21,12 @@ module.exports = {
     },
   },
   mode: "production",
+  // for splitting the code and also dependencies
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+    },
+  },
   module: {
     rules: [
       {
@@ -83,6 +89,7 @@ module.exports = {
         description: "This is a description for hello world",
       },
       template: "./src/page-template.hbs",
+      // for minifying the html. it should be true in production mode
       minify: false,
     }),
     new HtmlWebpackPlugin({
@@ -93,6 +100,7 @@ module.exports = {
         description: "This is a description for patato image",
       },
       template: "./src/page-template.hbs",
+      // for minifying the html
       minify: false,
     }),
   ],
