@@ -12,7 +12,7 @@ module.exports = {
     filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "./dist"),
     // for webpack5 default value is auto
-    publicPath: "",
+    publicPath: "/static/",
     // this is built in plugin for cleaning the output folder
     clean: {
       // if it is true, it will not delete the files. it will just show the files that will be deleted
