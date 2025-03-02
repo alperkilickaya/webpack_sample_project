@@ -3,6 +3,7 @@ const path = require("path");
 /* const TerserPlugin = require("terser-webpack-plugin"); */
 // we don't need this plugin in development mode
 /* const MiniCssExtractPlugin = require("mini-css-extract-plugin"); */
+const { ModuleFederationPlugin } = require("webpack").container;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "./dist"),
     // for webpack5 default value is auto
-    publicPath: "",
+    publicPath: "http://localhost:9002/",
     // this is built in plugin for cleaning the output folder
     clean: {
       // if it is true, it will not delete the files. it will just show the files that will be deleted
@@ -49,6 +50,10 @@ module.exports = {
         /* type: "asset/resource", */
         // inline type is for small files like svg. it will generate base64 string in the bundle.js file
         /*  type: "asset/inline", */
+      },
+      {
+        test: /\.txt/,
+        type: "asset/source",
       },
       // css loader
       {
@@ -89,6 +94,13 @@ module.exports = {
         description: "This is a description for patato image",
       },
       template: "./src/page-template.hbs",
+    }),
+    new ModuleFederationPlugin({
+      name: "PatatoImageApp",
+      filename: "remoteEntry.js",
+      remotes: {
+        HelloWorldApp: "HelloWorldApp@http://localhost:9001/remoteEntry.js",
+      },
     }),
   ],
 };

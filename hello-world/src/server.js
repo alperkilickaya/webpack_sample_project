@@ -4,7 +4,7 @@ const app = express();
 const fs = require("fs");
 
 // Serve static files from the dist directory
-app.use("/static", express.static(path.resolve(__dirname, "../dist")));
+app.use("/", express.static(path.resolve(__dirname, "../dist")));
 
 // Serve the hello-world.html file
 app.get("/", (req, res) => {

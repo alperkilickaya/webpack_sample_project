@@ -2,6 +2,7 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const { ModuleFederationPlugin } = require("webpack").container;
 module.exports = {
   entry: "./src/hello-world.js",
   output: {
@@ -9,7 +10,7 @@ module.exports = {
     filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "./dist"),
     // for webpack5 default value is auto
-    publicPath: "/static/",
+    publicPath: "http://localhost:9001/",
     // this is built in plugin for cleaning the output folder
     clean: {
       // if it is true, it will not delete the files. it will just show the files that will be deleted
@@ -28,6 +29,10 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.txt/,
+        type: "asset/source",
+      },
       // css loader
       {
         test: /\.css$/,
@@ -70,6 +75,14 @@ module.exports = {
       template: "./src/page-template.hbs",
       // for minifying the html. it should be true in production mode
       minify: false,
+    }),
+    new ModuleFederationPlugin({
+      name: "HelloWorldApp",
+      filename: "remoteEntry.js",
+      exposes: {
+        "./HelloWorldButton":
+          "./src/components/hello-world-button/hello-world-button.js",
+      },
     }),
   ],
 };

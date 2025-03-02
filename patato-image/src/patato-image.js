@@ -6,3 +6,10 @@ heading.render(_.upperFirst("patato image"));
 
 const image = new Image();
 image.render();
+
+import("HelloWorldApp/HelloWorldButton").then(
+  ({ default: HelloWorldButton }) => {
+    const helloWorldButton = new HelloWorldButton();
+    helloWorldButton.render();
+  }
+);

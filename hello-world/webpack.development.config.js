@@ -3,6 +3,7 @@ const path = require("path");
 /* const TerserPlugin = require("terser-webpack-plugin"); */
 // we don't need this plugin in development mode
 /* const MiniCssExtractPlugin = require("mini-css-extract-plugin"); */
+const { ModuleFederationPlugin } = require("webpack").container;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "./dist"),
     // for webpack5 default value is auto
-    publicPath: "",
+    publicPath: "http://localhost:9001/",
     // this is built in plugin for cleaning the output folder
     clean: {
       // if it is true, it will not delete the files. it will just show the files that will be deleted
@@ -35,6 +36,10 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.txt/,
+        type: "asset/source",
+      },
       // css loader
       {
         test: /\.css$/,
@@ -74,6 +79,14 @@ module.exports = {
         description: "This is a description for hello world",
       },
       template: "./src/page-template.hbs",
+    }),
+    new ModuleFederationPlugin({
+      name: "HelloWorldApp",
+      filename: "remoteEntry.js",
+      exposes: {
+        "./HelloWorldButton":
+          "./src/components/hello-world-button/hello-world-button.js",
+      },
     }),
   ],
 };
