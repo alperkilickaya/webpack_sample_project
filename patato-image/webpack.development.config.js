@@ -4,12 +4,9 @@ const path = require("path");
 // we don't need this plugin in development mode
 /* const MiniCssExtractPlugin = require("mini-css-extract-plugin"); */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-/* const { CleanWebpackPlugin } = require("clean-webpack-plugin"); */
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
-  entry: {
-    "hello-world": "./src/hello-world.js",
-    "patato-image": "./src/patato-image.js",
-  },
+  entry: "./src/patato-image.js",
   output: {
     // contenthash is for cache busting. it is not needed in development mode
     filename: "[name].bundle.js",
@@ -30,9 +27,9 @@ module.exports = {
     },
     devMiddleware: {
       writeToDisk: true, // it will write the files to the disk
-      index: "index.html", // it will serve the index.html file
+      index: "patato-image.html", // it will serve the index.html file
     },
-    port: 9000, // it will run the server on port 9000
+    port: 9002, // it will run the server on port 9002
     open: true, // it will open the browser automatically
     hot: true, // it will hot reload the page automatically
   },
@@ -53,10 +50,6 @@ module.exports = {
         // inline type is for small files like svg. it will generate base64 string in the bundle.js file
         /*  type: "asset/inline", */
       },
-      {
-        test: /\.(txt)$/,
-        type: "asset/source",
-      },
       // css loader
       {
         test: /\.css$/,
@@ -71,7 +64,6 @@ module.exports = {
           // class properties are now supported in all browsers generally.
           options: {
             presets: ["@babel/preset-env"],
-            plugins: ["@babel/plugin-proposal-class-properties"],
           },
         },
       },
@@ -88,20 +80,11 @@ module.exports = {
       // contenthash is for cache busting
       filename: "style.[contenthash].css",
     }), */
-    /*  new CleanWebpackPlugin(), */
-    new HtmlWebpackPlugin({
-      title: "Hello world",
-      filename: "hello-world.html",
-      chunks: ["hello-world"],
-      meta: {
-        description: "This is a description for hello world",
-      },
-      template: "./src/page-template.hbs",
-    }),
+    new CleanWebpackPlugin(),
+
     new HtmlWebpackPlugin({
       title: "Patato image",
       filename: "patato-image.html",
-      chunks: ["patato-image"],
       meta: {
         description: "This is a description for patato image",
       },
