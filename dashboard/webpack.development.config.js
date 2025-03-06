@@ -44,6 +44,10 @@ module.exports = {
         type: "asset/source",
       },
       {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
