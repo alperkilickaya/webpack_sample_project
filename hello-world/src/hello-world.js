@@ -1,8 +1,4 @@
-import HelloWorldButton from "./components/hello-world-button/hello-world-button.js";
-import Heading from "./components/heading/heading.js";
-import _ from "lodash";
-const heading = new Heading();
-heading.render(_.upperFirst("hello world"));
+import HelloWorldPage from "./components/hello-world-page/hello-world-page.js";
 
-const helloWorldButton = new HelloWorldButton();
-helloWorldButton.render();
+const helloWorldPage = new HelloWorldPage();
+helloWorldPage.render();

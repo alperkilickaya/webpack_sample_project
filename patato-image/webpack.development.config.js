@@ -98,8 +98,8 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "PatatoImageApp",
       filename: "remoteEntry.js",
-      remotes: {
-        HelloWorldApp: "HelloWorldApp@http://localhost:9001/remoteEntry.js",
+      exposes: {
+        "./PatatoPage": "./src/components/patato-page/patato-page.js",
       },
     }),
   ],

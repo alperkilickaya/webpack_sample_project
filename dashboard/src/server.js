@@ -6,18 +6,18 @@ const fs = require("fs");
 // Serve static files from the dist directory
 app.use("/", express.static(path.resolve(__dirname, "../dist")));
 
-// Serve the patato-image.html file
-app.get("/", (req, res) => {
-  const filePath = path.resolve(__dirname, "../dist/patato-image.html");
+// Serve the hello-world.html file
+app.get("*", (req, res) => {
+  const filePath = path.resolve(__dirname, "../dist/dashboard.html");
   fs.readFile(filePath, "utf8", (err, html) => {
     if (err) {
-      res.status(500).send("Error reading patato-image.html");
+      res.status(500).send("Error reading index.html");
     } else {
       res.send(html);
     }
   });
 });
 
-app.listen(9002, () => {
-  console.log("Server is running on port 9002");
+app.listen(9000, () => {
+  console.log("Server is running on port 9000");
 });
