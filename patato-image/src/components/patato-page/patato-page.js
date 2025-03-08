@@ -1,5 +1,6 @@
 import Heading from "../heading/heading";
 import Image from "../image/image";
+
 import _ from "lodash";
 
 class PatatoPage {
@@ -9,6 +10,12 @@ class PatatoPage {
 
     const image = new Image();
     image.render();
+
+    // dynamic import because it is not needed for the initial load. it is async
+    import("ImageCaptionApp/ImageCaption").then((ImageCaptionModule) => {
+      const imageCaption = new ImageCaptionModule.default();
+      imageCaption.render("This is a caption");
+    });
   }
 }
 

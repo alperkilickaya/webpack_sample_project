@@ -4,13 +4,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
 module.exports = {
-  entry: "./src/patato-image.js",
+  entry: "./src/image-caption.js",
   output: {
     // contenthash is for cache busting
     filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "./dist"),
     // for webpack5 default value is auto
-    publicPath: "http://localhost:9002/",
+    publicPath: "http://localhost:9003/",
     // this is built in plugin for cleaning the output folder
     clean: {
       // if it is true, it will not delete the files. it will just show the files that will be deleted
@@ -30,21 +30,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(png|jpg|jpeg)$/,
-        // this is auto type for webpack5. below 8kb it will be inline type otherwise it will be resource type
-        type: "asset",
-        parser: {
-          dataUrlCondition: {
-            // below 8kb it will be inline type otherwise it will be resource type
-            maxSize: 8 * 1024,
-          },
-        },
-        // each asset will be in a separate file. It makes the bundle.js file smaller but needs more requests to the server
-        /* type: "asset/resource", */
-        // inline type is for small files like svg. it will generate base64 string in the bundle.js file
-        /*  type: "asset/inline", */
-      },
-      {
         test: /\.txt/,
         type: "asset/source",
       },
@@ -53,17 +38,6 @@ module.exports = {
         test: /\.css$/,
         /* use: ["style-loader", "css-loader"], */
         use: [MiniCssExtractPlugin.loader, "css-loader"],
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          // class properties are now supported in all browsers generally.
-          options: {
-            presets: ["@babel/preset-env"],
-          },
-        },
       },
       {
         test: /\.hbs$/,
@@ -80,25 +54,21 @@ module.exports = {
     new CleanWebpackPlugin(),
     // use chunks for splitting the code
     // use htmlwebpack instance for multiple html files
-
     new HtmlWebpackPlugin({
-      title: "Patato image",
-      filename: "patato-image.html",
+      title: "Image caption",
+      filename: "image-caption.html",
       meta: {
-        description: "This is a description for patato image",
+        description: "This is a description for image caption",
       },
       template: "./src/page-template.hbs",
-      // for minifying the html
+      // for minifying the html. it should be true in production mode
       minify: false,
     }),
     new ModuleFederationPlugin({
-      name: "PatatoImageApp",
+      name: "ImageCaptionApp",
       filename: "remoteEntry.js",
       exposes: {
-        "./PatatoPage": "./src/components/patato-page/patato-page.js",
-      },
-      remotes: {
-        ImageCaptionApp: "ImageCaptionApp@http://localhost:9003/remoteEntry.js",
+        "./ImageCaption": "./src/components/image-caption/image-caption.js",
       },
     }),
   ],

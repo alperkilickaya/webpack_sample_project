@@ -7,13 +7,13 @@ const { ModuleFederationPlugin } = require("webpack").container;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
-  entry: "./src/patato-image.js",
+  entry: "./src/image-caption.js",
   output: {
     // contenthash is for cache busting. it is not needed in development mode
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "./dist"),
     // for webpack5 default value is auto
-    publicPath: "http://localhost:9002/",
+    publicPath: "http://localhost:9003/",
     // this is built in plugin for cleaning the output folder
     clean: {
       // if it is true, it will not delete the files. it will just show the files that will be deleted
@@ -28,29 +28,14 @@ module.exports = {
     },
     devMiddleware: {
       writeToDisk: true, // it will write the files to the disk
-      index: "patato-image.html", // it will serve the index.html file
+      index: "image-caption.html", // it will serve the index.html file
     },
-    port: 9002, // it will run the server on port 9002
+    port: 9003, // it will run the server on port 9000
     open: true, // it will open the browser automatically
     hot: true, // it will hot reload the page automatically
   },
   module: {
     rules: [
-      {
-        test: /\.(png|jpg|jpeg)$/,
-        // this is auto type for webpack5. below 8kb it will be inline type otherwise it will be resource type
-        type: "asset",
-        parser: {
-          dataUrlCondition: {
-            // below 8kb it will be inline type otherwise it will be resource type
-            maxSize: 8 * 1024,
-          },
-        },
-        // each asset will be in a separate file. It makes the bundle.js file smaller but needs more requests to the server
-        /* type: "asset/resource", */
-        // inline type is for small files like svg. it will generate base64 string in the bundle.js file
-        /*  type: "asset/inline", */
-      },
       {
         test: /\.txt/,
         type: "asset/source",
@@ -69,6 +54,7 @@ module.exports = {
           // class properties are now supported in all browsers generally.
           options: {
             presets: ["@babel/preset-env"],
+            plugins: ["@babel/plugin-proposal-class-properties"],
           },
         },
       },
@@ -86,23 +72,19 @@ module.exports = {
       filename: "style.[contenthash].css",
     }), */
     new CleanWebpackPlugin(),
-
     new HtmlWebpackPlugin({
-      title: "Patato image",
-      filename: "patato-image.html",
+      title: "Image caption",
+      filename: "image-caption.html",
       meta: {
-        description: "This is a description for patato image",
+        description: "This is a description for image caption",
       },
       template: "./src/page-template.hbs",
     }),
     new ModuleFederationPlugin({
-      name: "PatatoImageApp",
+      name: "ImageCaptionApp",
       filename: "remoteEntry.js",
       exposes: {
-        "./PatatoPage": "./src/components/patato-page/patato-page.js",
-      },
-      remotes: {
-        ImageCaptionApp: "ImageCaptionApp@http://localhost:9003/remoteEntry.js",
+        "./ImageCaption": "./src/components/image-caption/image-caption.js",
       },
     }),
   ],
